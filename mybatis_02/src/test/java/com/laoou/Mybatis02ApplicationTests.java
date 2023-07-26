@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.laoou.dao.UserDao;
 import com.laoou.domain.User;
-import com.laoou.domain.query.UserQuery;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class Mybatis02ApplicationTests {
@@ -18,11 +18,13 @@ class Mybatis02ApplicationTests {
 
     @Test
     void testGetAll() {
+        //-----
 //        方式一:
 //        QueryWrapper qw = new QueryWrapper();
 //        qw.lt("age",18);
 //        List<User> users = userDao.selectList(qw);
 //        System.out.println(users);
+        //-----
         //        方式二:
 //        QueryWrapper<User> qw = new QueryWrapper<User>();
 //        qw.lambda().lt(User::getAge,18);
@@ -33,6 +35,7 @@ class Mybatis02ApplicationTests {
 //        lqw.lt(User::getAge,25);
 //        List<User> users = userDao.selectList(lqw);
 //        System.out.println(users);
+        //-----
         //        方式三:
 //        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
 //1
@@ -48,7 +51,7 @@ class Mybatis02ApplicationTests {
 //        List<User> users = userDao.selectList(lqw);
 //        System.out.println(users);
 
-
+//-----
 ////        空判定
 //        UserQuery uq = new UserQuery();
 ////        uq.setAge(10);
@@ -61,8 +64,48 @@ class Mybatis02ApplicationTests {
 //        lqw.gt(null!=uq.getAge2(),User::getAge,uq.getAge2());
 //        List<User> users = userDao.selectList(lqw);
 //        System.out.println(users);
-
+// -----
 //        查询投影
+//        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+//        lqw.select(User::getId,User::getName);
+//        List<User> users = userDao.selectList(lqw);
+//        System.out.println(users);
+//-----
+//        QueryWrapper<User> lqw = new QueryWrapper<User>();
+//        lqw.select("id","name");
+//        List<User> users = userDao.selectList(lqw);
+//        System.out.println(users);
+//-----
+//        总数要用selectMaps
+//        QueryWrapper<User> lqw = new QueryWrapper<User>();
+//
+////        lqw.select("count(*)");
+//
+//        lqw.select("count(*) as count,tel");
+//        lqw.groupBy("tel");
+//
+//        List<Map<String, Object>> users = userDao.selectMaps(lqw);
+//        System.out.println(users);
+//-----
+//        条件查询 登录
+//        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+//        lqw.eq(User::getName,"老罗").eq(User::getPassword,"laoou");
+//        User users = userDao.selectOne(lqw);
+//        System.out.println(users);
+//        ----
+//        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+//        lqw.between(User::getAge,10,20);
+//        List<User> users = userDao.selectList(lqw);
+//        System.out.println(users);
+        //        ----
+//        like
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+        lqw.like(User::getName, "2");
+//        除了like 还有likeright ，likeleft，就是百分号加在哪边
+        List<User> users = userDao.selectList(lqw);
+        System.out.println(users);
+
     }
+
 
 }
